@@ -22,11 +22,16 @@ There are some mandatory constraints you have to attend:
 - Donwload repository
 - npm i ( node v12 required )
 
-## Run app locally
+## Run the Production mode
 
-- webpack -p
+- npm run build
 - npm start
 - go to localhost:3000
+
+## Run the development mode
+
+- npm start
+- npm run start:dev
 
 ## API REST
 
