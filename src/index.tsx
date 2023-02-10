@@ -1,16 +1,16 @@
 import socketIOClient from 'socket.io-client';
 const ENDPOINT = 'http://localhost:3000';
 import { createRoot } from 'react-dom/client';
-import './index.css';
+import './index.scss';
 
 import List from './components/List';
 
 const Root = () => {
     return (
-        <>
+        <div>
             <h1>League Champion</h1>
             <List />
-        </>
+        </div>
     )
 }
 

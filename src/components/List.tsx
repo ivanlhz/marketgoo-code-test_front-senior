@@ -1,86 +1,95 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+const ENDPOINT = 'http://localhost:3000';
 
-class List extends React.Component {
+type Player = {
+    "id": number,
+    "name": string,
+    "team": string,
+    "score": number,
+    "createdAt": Date,
+    "updatedAt": Date
+}
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: null,
-            name: null,
-            team: null,
-            score: null
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-    }
+type State = {
+    data: Player[] | null,
+    name?: string | null,
+    team?: string | null,
+    score?: number | null
+}
 
-    componentDidMount() {
-        axios.get('/players').then(response => {
-            this.setState({ data: response.data });
+const List = () => {
+    const [state, setState] = useState<State>({
+        data: null,
+        name: null,
+        team: null,
+        score: null
+    })
+
+    const players: Player[] | null = state.data;
+
+    useEffect(() => {
+        axios.get(`${ENDPOINT}/players`).then(response => {
+            setState(state => ({ ...state, data: response.data.data }));
         })
+    }, [])
+
+
+    const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const element = event.target as HTMLInputElement
+        setState(state => ({ ...state, [element.name]: element.value }));
     }
 
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-    }
-
-    handleSubmit(event) {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const { name, team, score } = this.state;
-        axios.post('/players', { name, team, score }).then(() => {
-            axios.get('/players').then(response => {
-                this.setState({ data: response.data });
+        const { name, team, score } = state;
+        axios.post(`${ENDPOINT}/players`, { name, team, score }).then(() => {
+            axios.get(`${ENDPOINT}/players`).then(response => {
+                setState(state => ({ ...state, data: response.data.data }));
             })
         })
     }
 
-    handleDelete(id) {
-        axios.delete(`/players/${id}`).then(() => {
-            axios.get('/players').then(response => {
-                this.setState({ data: response.data });
+    const handleDelete = (id: number) => {
+        axios.delete(`${ENDPOINT}/players/${id}`).then(() => {
+            axios.get(`${ENDPOINT}/players`).then(response => {
+                setState(state => ({ ...state, data: response.data.data }));
             })
         })
     }
-
-    render() {
-        const players = this.state.data;
-
-        return (
-            <>
-                <table>
-                    <thead>
-                        <tr>
-                            <td>Player</td>
-                            <td>Team</td>
-                            <td>Score</td>
-                            <td>Actions</td>
+    return (
+        <>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Player</td>
+                        <td>Team</td>
+                        <td>Score</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {players?.length && players.map(x =>
+                        <tr key={`${Math.random()}-${x.name}`}>
+                            <td>{x.name}</td>
+                            <td>{x.team}</td>
+                            <td>{x.score}</td>
+                            <td><button onClick={() => handleDelete(x.id)}>Remove</button></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {players && players.data.map(x =>
-                            <tr>
-                                <td>{x.name}</td>
-                                <td>{x.team}</td>
-                                <td>{x.score}</td>
-                                <td><button onClick={() => this.handleDelete(x.id)}>Remove</button></td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-                <br />
-                <form onSubmit={this.handleSubmit}>
-                    <h4>Add new players</h4>
-                    <input name="name" placeholder="player name" onChange={this.handleChange}></input>
-                    <input name="team" placeholder="team name" onChange={this.handleChange}></input>
-                    <input name="score" placeholder="team score" onChange={this.handleChange}></input>
-                    <button>Add</button>
-                </form>
+                    )}
+                </tbody>
+            </table>
+            <br />
+            <form onSubmit={handleSubmit}>
+                <h4>Add new players</h4>
+                <input name="name" placeholder="player name" onChange={handleChange}></input>
+                <input name="team" placeholder="team name" onChange={handleChange}></input>
+                <input name="score" placeholder="team score" onChange={handleChange}></input>
+                <button>Add</button>
+            </form>
 
-            </>
-        );
-    }
+        </>
+    );
 
 }
 
