@@ -1,7 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import socketIOClient from "socket.io-client";
+import socketIOClient from 'socket.io-client';
 const ENDPOINT = 'http://localhost:3000';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 
 import List from './components/List';
@@ -15,8 +14,11 @@ const Root = () => {
     )
 }
 
+
 const container = document.getElementById('app');
-ReactDOM.render( <Root />, container );
+if (!container) throw new Error('Failed to find the root element');
+const root = createRoot(container);
+root.render( <Root /> );
 
 const socket = socketIOClient(ENDPOINT);
 socket.on("update/players", data => {

@@ -1,40 +1,45 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
 
 module.exports = {
-    mode: 'development',
-    entry: './src/index.js',
+    entry: "./src/index.tsx",
+    mode: "development",
     output: {
-        path: path.resolve(__dirname, 'public'),
-        filename: '[name].js'
+        filename: "bundle.[fullhash].js",
+        path: path.resolve(__dirname, "public"),
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./src/index.html",
+        }),
+        new MiniCssExtractPlugin()
+    ],
+    resolve: {
+        modules: [__dirname, "src", "node_modules"],
+        extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],
     },
     module: {
-        rules: [
-            {
-                test: /\.js$/,
+        rules: [{
+                test: /\.(js|ts)x?$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-react']
-                    }
-                }
+                use: ["babel-loader"]
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: '/public/',
-                        },
-                    },
-                    'css-loader',
-                ],
-            }
-        ]
+                exclude: /node_modules/,
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        publicPath: '/public/',
+                    }
+                }, "css-loader"]
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                exclude: /node_modules/,
+                use: ["file-loader"]
+            },
+        ],
     },
-    plugins: [
-        new MiniCssExtractPlugin()
-    ]
-}
+};

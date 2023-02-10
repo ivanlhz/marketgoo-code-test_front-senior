@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 
 class List extends React.Component {
@@ -6,10 +6,10 @@ class List extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          data: null,
-          name: null,
-          team: null,
-          score: null
+            data: null,
+            name: null,
+            team: null,
+            score: null
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,20 +17,20 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/players').then( response => {
+        axios.get('/players').then(response => {
             this.setState({ data: response.data });
         })
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const {name, team, score} = this.state;
+        const { name, team, score } = this.state;
         axios.post('/players', { name, team, score }).then(() => {
-            axios.get('/players').then( response => {
+            axios.get('/players').then(response => {
                 this.setState({ data: response.data });
             })
         })
@@ -38,7 +38,7 @@ class List extends React.Component {
 
     handleDelete(id) {
         axios.delete(`/players/${id}`).then(() => {
-            axios.get('/players').then( response => {
+            axios.get('/players').then(response => {
                 this.setState({ data: response.data });
             })
         })
@@ -59,17 +59,17 @@ class List extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { players && players.data.map( x =>
-                        <tr>
-                            <td>{x.name}</td>
-                            <td>{x.team}</td>
-                            <td>{x.score}</td>
-                            <td><button onClick={() => this.handleDelete(x.id)}>Remove</button></td>
-                        </tr>
-                        ) }
+                        {players && players.data.map(x =>
+                            <tr>
+                                <td>{x.name}</td>
+                                <td>{x.team}</td>
+                                <td>{x.score}</td>
+                                <td><button onClick={() => this.handleDelete(x.id)}>Remove</button></td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
-                <br/>
+                <br />
                 <form onSubmit={this.handleSubmit}>
                     <h4>Add new players</h4>
                     <input name="name" placeholder="player name" onChange={this.handleChange}></input>
