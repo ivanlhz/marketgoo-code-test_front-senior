@@ -34,9 +34,7 @@ module.exports = {
       {
         test: /\.(scss|css)$/,
         use: [
-          process.env.NODE_ENV !== 'production'
-            ? 'style-loader'
-            : MiniCssExtractPlugin.loader,
+          process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           {
             loader: 'sass-loader',
@@ -49,7 +47,10 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -67,7 +68,7 @@ module.exports = {
       patterns: [{ from: 'src/assets', to: 'assets' }]
     }),
     new ESLintPlugin({
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js', '.jsx'],
       exclude: 'node_modules',
       context: 'src'
     })

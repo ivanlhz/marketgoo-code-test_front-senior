@@ -19,6 +19,9 @@
         "strictPropertyInitialization": true,
         "useUnknownInCatchVariables": true,
         "baseUrl": "./src",
+        "paths": {
+            "@/*": ["*"]
+        },
         "module": "ES2022",
         "moduleResolution": "node",
         "target": "ES2022",

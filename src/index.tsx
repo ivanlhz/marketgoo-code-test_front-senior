@@ -2,7 +2,7 @@ import socketIOClient from 'socket.io-client';
 const ENDPOINT = 'http://localhost:3000';
 import { createRoot } from 'react-dom/client';
 import './index.scss';
-import { App } from 'components/App'
+import { App } from '@/components/App'
 
 const container = document.getElementById('app');
 if (!container) throw new Error('Failed to find the root element');
