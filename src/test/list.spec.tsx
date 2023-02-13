@@ -1,12 +1,12 @@
 import List from 'components/List';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import { PLAYERS } from './fixtures';
+import { PLAYERLIST } from './fixtures';
 import { act } from 'react-dom/test-utils';
 
 describe('List Component', () => {
   beforeEach(() => {
-    jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve({ data: PLAYERS }));
+    jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve({ data: PLAYERLIST }));
   });
 
   it('Should render the headers', () => {
