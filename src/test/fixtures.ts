@@ -42,13 +42,14 @@ export const PLAYER2: Player = new Player({
 });
 
 export class DummyRepository implements PlayerRepository {
-  removePlayerById(): Promise<Player[]> {
-    return Promise.resolve([]);
+  async savePlayer(player: Player){
+    return Promise.resolve([PLAYER,player]);
+}
+
+  async removePlayerById(): Promise<boolean> {
+    return Promise.resolve(true);
   }
-  savePlayer(player: Player): Promise<Player[]> {
-    return Promise.resolve([PLAYER, player])
-  }
-  getAll(): Promise<Player[]> {
+  async getAll(): Promise<Player[]> {
     return Promise.resolve([PLAYER]);
   }
 }

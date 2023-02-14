@@ -1,4 +1,3 @@
-import { Player } from '../entities/Player';
 import { PlayerRepository } from '../repositories/PlayerRepository';
 
 export class RemovePlayerUseCase {
@@ -8,7 +7,7 @@ export class RemovePlayerUseCase {
     this.playerRepository = playerRepository;
   }
 
-  execute(id:string): Promise<Player[]> {
+  execute(id:string): Promise<boolean> {
     return this.playerRepository.removePlayerById(id);
   }
 }

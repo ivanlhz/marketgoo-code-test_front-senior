@@ -5,6 +5,6 @@ describe('RemovePlayerUseCase', () => {
   it('Runs the repository remove method', async () => {
     const getPlayer = new RemovePlayerUseCase(new DummyRepository());
     const data = await getPlayer.execute('');
-    expect(data).toHaveLength(0);
+    expect(data).toBeTruthy()
   });
 });
