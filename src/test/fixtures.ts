@@ -23,23 +23,23 @@ export const PLAYERLIST = {
   ]
 };
 
-export const PLAYER: Player = {
+export const PLAYER: Player = new Player({
   id: '1',
   name: 'Peter',
   team: 'Pandas',
   score: 5,
   createdAt: new Date('2020-05-28 11:32:54.506 +00:00'),
   updatedAt: new Date('2020-05-28 11:32:54.506 +00:00')
-};
+});
 
-export const PLAYER2: Player = {
+export const PLAYER2: Player = new Player({
   id: '2',
   name: 'Jhon',
   team: 'Cobrakay',
   score: 8,
   createdAt: new Date('2020-05-28 11:32:54.506 +00:00'),
   updatedAt: new Date('2020-05-28 11:32:54.506 +00:00')
-};
+});
 
 export class DummyRepository implements PlayerRepository {
   removePlayerById(): Promise<Player[]> {
